@@ -9,11 +9,16 @@ class ProductList with ChangeNotifier {
 
   // Clonando lista e retornando
   List<Product> get items => [..._items];
-  List<Product> get favoriteItems => _items.where((product) => product.isFavorite).toList();
+  List<Product> get favoriteItems =>
+      _items.where((product) => product.isFavorite).toList();
 
   void addProduct(Product product) {
     _items.add(product);
     notifyListeners();
+  }
+
+  int get itemsCount {
+    return _items.length;
   }
 }
 
