@@ -33,7 +33,7 @@ class CartItemWidget extends StatelessWidget {
       confirmDismiss: (_) {
         return showDialog<bool>(
           context: context,
-          builder: (contexto) => AlertDialog(
+          builder: (context) => AlertDialog(
             title: Text('Tem Certeza?'),
             content: Text('Quer remover o item do carrinho?'),
             actions: [

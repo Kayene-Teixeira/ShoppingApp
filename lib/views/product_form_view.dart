@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormView extends StatefulWidget {
   const ProductFormView({super.key});
@@ -18,6 +18,27 @@ class _ProductFormViewState extends State<ProductFormView> {
 
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    if (_formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if (arg != null) {
+        final Product product = arg as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.name;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['imageUrl'] = product.imageUrl;
+
+        _imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -50,24 +71,15 @@ class _ProductFormViewState extends State<ProductFormView> {
   }
 
   void submitForm() {
-    final isValid = _formKey.currentState!.validate() ?? false;
+    final isValid = _formKey.currentState!.validate();
 
     if (!isValid) {
       return;
     }
     _formKey.currentState!.save();
 
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
-
-    print(newProduct.id);
-    print(newProduct.name);
-    print(newProduct.price);
+    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -83,7 +95,7 @@ class _ProductFormViewState extends State<ProductFormView> {
         actions: [
           IconButton(
             onPressed: submitForm,
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
           ),
         ],
       ),
@@ -94,6 +106,7 @@ class _ProductFormViewState extends State<ProductFormView> {
           child: ListView(
             children: [
               TextFormField(
+                initialValue: _formData['name']?.toString(),
                 decoration: const InputDecoration(
                   labelText: 'Nome',
                 ),
@@ -115,6 +128,7 @@ class _ProductFormViewState extends State<ProductFormView> {
                 },
               ),
               TextFormField(
+                initialValue: _formData['price'] != null ? (_formData['price'] as double).toStringAsFixed(2) : '',
                 decoration: const InputDecoration(labelText: 'Preço'),
                 textInputAction: TextInputAction
                     .next, // mostra texto para ir para o próximo elemento
@@ -136,6 +150,7 @@ class _ProductFormViewState extends State<ProductFormView> {
                 },
               ),
               TextFormField(
+                initialValue: _formData['description']?.toString(),
                 decoration: const InputDecoration(labelText: 'Descrição'),
                 focusNode: _descriptionFocus,
                 keyboardType: TextInputType.multiline,
