@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/utils/contants.dart';
+import 'package:shop/utils/constants.dart';
 
 // Mixin que ajuda com a reatividade
 class ProductList with ChangeNotifier {

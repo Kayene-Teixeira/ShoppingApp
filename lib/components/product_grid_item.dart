@@ -11,7 +11,6 @@ class ProductGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context);
-    final msg = ScaffoldMessenger.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
