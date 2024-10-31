@@ -8,6 +8,10 @@ import 'package:shop/utils/app_routes.dart';
 class ProductsView extends StatelessWidget {
   const ProductsView({super.key});
 
+  Future<void> _refreshProducts(BuildContext context) {
+    return Provider.of<ProductList>(context, listen: false).loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ProductList products = Provider.of<ProductList>(context);
@@ -30,15 +34,19 @@ class ProductsView extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: const AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: products.itemsCount,
-          itemBuilder: (context, index) => Column(
-            children: [
-              ProductItem(products.items[index]),
-              Divider(),
-            ],
+      body: RefreshIndicator(
+        //este é o widget que atualiza quando arrasta a tela para baixo
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: products.itemsCount,
+            itemBuilder: (context, index) => Column(
+              children: [
+                ProductItem(products.items[index]),
+                Divider(),
+              ],
+            ),
           ),
         ),
       ),

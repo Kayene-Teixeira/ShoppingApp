@@ -11,6 +11,7 @@ class ProductGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
     final cart = Provider.of<Cart>(context);
+    final msg = ScaffoldMessenger.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -34,7 +35,8 @@ class ProductGridItem extends StatelessWidget {
             onPressed: () {
               // Abre a mensagem de adicionado ao carrinho
               cart.addItem(product);
-              ScaffoldMessenger.of(context).hideCurrentSnackBar(); // esconde a mensagem anterior se ele clica varias vezes
+              ScaffoldMessenger.of(context)
+                  .hideCurrentSnackBar(); // esconde a mensagem anterior se ele clica varias vezes
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Produto adicionado com sucesso!'),
