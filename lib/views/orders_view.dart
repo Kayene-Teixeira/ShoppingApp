@@ -45,19 +45,6 @@ class OrdersView extends StatelessWidget {
           }
         },
       ),
-      // body: RefreshIndicator(
-      //   onRefresh: () => _refreshOrders(context),
-      //   child: _isLoading
-      //       ? const Center(
-      //           child: CircularProgressIndicator(),
-      //         )
-      //       : ListView.builder(
-      //           itemCount: orders.itemsCount,
-      //           itemBuilder: (contexto, index) {
-      //             return OrderWidget(order: orders.items[index]);
-      //           },
-      //         ),
-      // ),
       drawer: const AppDrawer(),
     );
   }
